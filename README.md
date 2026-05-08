@@ -165,6 +165,7 @@ data: Je suis actif!
 data: Je suis actif!
 ---
 data: Je suis actif!
+
 ros2 lifecycle set /mon_lifecycle deactivate
 
 
