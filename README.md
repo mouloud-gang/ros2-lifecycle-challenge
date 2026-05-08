@@ -1,13 +1,23 @@
 source /opt/ros/jazzy/setup.bash
+
 source ~/ros2_ws/install/setup.bash
+
 cd ~/ros2_ws
+
 ros2 pkg create --build-type ament_python lifecycle_pkg
+
 cd lifecycle_pkg/lifecycle_pkg
+
 nano lifecycle_node.py
+
 ----paste:
+
 import rclpy
+
 from rclpy.lifecycle import Node
+
 from rclpy.lifecycle import State
+
 from rclpy.lifecycle import TransitionCallbackReturn
 
 from std_msgs.msg import String
@@ -69,48 +79,81 @@ def main(args=None):
 
     rclpy.spin(node)
 
-    rclpy.shutdown()
-  if __name__ == '__main__':
+    rclpy.shutdown() 
+    if __name__ == '__main__':
     main()
     ------------------------------------
 chmod +x lifecycle_node.py
+
 cd ~/ros2_ws/src/lifecycle_pkg
+
 nano setup.py
+
 ------remplace avec:
-   entry_points={
+
+    entry_points={
+   
     'console_scripts': [
       'lifecycle_node = lifecycle_pkg.lifecycle_node:main',
     ],
-},
+    },
 -------------------------------------
 nano package.xml
+
 ajoute:
-<depend>rclpy</depend>
-<depend>std_msgs</depend>
+
+ `<depend>rclpy</depend>`
+
+ `<depend>std_msgs</depend>`
+
 apres
- <license>TODO: License declaration</license>
+
+ `<license> TODO: License declaration</license>`
+ 
 -------------------------------------
 cd ~/ros2_ws
+
 colcon build
+
 source install/setup.bash
+
 ros2 run lifecycle_pkg lifecycle_node
+
 -----dans le 2eme terminal:
+
 source /opt/ros/jazzy/setup.bash
+
 source ~/ros2_ws/install/setup.bash
+
 ros2 lifecycle get /mon_lifecycle
+
 ----on a le message:
+
 unconfigured [1]
+
 ros2 lifecycle set /mon_lifecycle configure
+
 ----on a le message:
+
 Transitioning successful
+
 ros2 lifecycle get /mon_lifecycle
+
+
 ----on a le message:
+
 inactive [2]
+
 ros2 lifecycle set /mon_lifecycle activate
+
 ----on a le message:
+
 Transitioning successful
+
 ros2 topic echo /actif
+
 ----on a le message:
+
 data: Je suis actif!
 ---
 data: Je suis actif!
